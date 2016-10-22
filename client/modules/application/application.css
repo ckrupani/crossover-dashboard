@@ -1,0 +1,42 @@
+[ng-cloak] {
+    display: none;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-color: #FFFFFF;
+    margin-top: 72px;
+    margin-bottom: 20px;
+}
+
+.navbar, footer {
+    background-color: #61BCF6;
+}
+
+.navbar {
+    margin: 0px;
+}
+
+.navbar a {
+    color: #333333 !important;
+}
+
+.welcomeMessage {
+    text-decoration: none;
+}
+
+.logoutButton {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+footer {
+    height: 20px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}

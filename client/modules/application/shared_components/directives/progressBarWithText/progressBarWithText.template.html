@@ -1,0 +1,10 @@
+<div class="progressBarWithText">
+    <div class="outerDiv">
+        <div class="greenDiv"></div>
+        <div class="redDiv"></div>
+        <div class="barLabel">
+            <span class="value">{{ (value >= 0 && value <= 100 ? value : (value > 100 ? 100 : (value < 0 ? 0 : value))) + '%' }}</span><br>
+            <span class="text">{{ label }}</span>
+        </div>
+    </div>
+</div>

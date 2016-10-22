@@ -1,0 +1,337 @@
+<div class="dashboardView">
+    <div class="row table-header">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-2 changeListHeader" align="center">Changelist/Build</div>
+                        <div class="col-md-2" align="center">Owner</div>
+                        <div class="col-md-2" align="center">Time Started</div>
+                        <div class="col-md-2" align="center">State</div>
+                        <div class="col-md-1" align="center">Metrics</div>
+                        <div class="col-md-1" align="center">Build</div>
+                        <div class="col-md-1" align="center">Unit Test</div>
+                        <div class="col-md-1" align="center">Functional Test</div>  
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row table-body">
+        <div class="col-md-12">
+            <div class="panel-group" id="accordion">
+                <div class="panel" ng-class="{'panel-default': (build.state === 'Pending'), 'panel-info': (build.state === 'Running'), 'panel-success': (build.state === 'Complete' || build.state === 'Accepted'), 'panel-danger': (build.state === 'Rejected' || build.state === 'Fail')}" ng-repeat="build in ctrl.buildList">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-2 buildName">
+                                <span ng-if="build.type === 'build'">&#x1f4bb</span>
+                                <span ng-if="build.type === 'firewall'">&#x2328</span>
+                                <a data-toggle="collapse" data-parent="#accordion" ng-href="{{ '#' + $index }}">
+                                    {{ build.name }}
+                                </a>
+                            </div>
+                            <div class="col-md-2 text-column" align="center">{{ build.owner }}</div>
+                            <div class="col-md-2 text-column" align="center">{{ build.time }}</div>
+                            <div class="col-md-2 text-column" align="center">{{ build.state }}</div>
+                            <div class="col-md-1" align="center">
+                                <progress-bar ng-show="!build.collapse" value="{{ build.metrics.percentComplete }}" color="{{ build.metrics.color }}"></progress-bar>
+                            </div>
+                            <div class="col-md-1" align="center">
+                                <progress-bar ng-show="!build.collapse" value="{{ build.build.percentComplete }}" color="{{ build.build.color }}"></progress-bar>
+                            </div>
+                            <div class="col-md-1" align="center">
+                                <progress-bar ng-show="!build.collapse" value="{{ build.unitTest.percentComplete }}" color="{{ build.unitTest.color }}"></progress-bar>
+                            </div>
+                            <div class="col-md-1" align="center">
+                                <progress-bar ng-show="!build.collapse" value="{{ build.functionalTest.percentComplete }}" color="{{ build.functionalTest.color }}"></progress-bar>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="{{ $index }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn collapseButton" ng-class="{'btn-default': (build.metrics.state === 'Pending'), 'btn-info': (build.metrics.state === 'Running'), 'btn-success': (build.metrics.state === 'Complete' || build.metrics.state === 'Accepted'), 'btn-danger': (build.metrics.state === 'Rejected')}" data-toggle="modal" data-target="#moreInformationModalId">
+                                                <div class="collapseContainerDiv">
+                                                    <div class="row">
+                                                        <div class="col-md-12 collapseContainerDivRow">
+                                                            <p class="text-success collapseContainerDivTitle">Metrics</p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.metrics.state === 'Pending'" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-muted">Yet to run...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.metrics.state === 'Running'" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-info">In Progress...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.metrics.state !== 'Pending' && build.metrics.state !== 'Running'" class="row">
+                                                        <div class="col-md-4">
+                                                            <arrow direction="{{build.metrics.test.increase ? 'up' : 'down'}}" background-color="{{build.metrics.test.increase ? '#449D44' : 'red'}}" font-color="white" value="{{ build.metrics.test.value }}" label="{{ build.metrics.test.label }}"></arrow>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <arrow direction="{{build.metrics.maintainability.increase ? 'up' : 'down'}}" background-color="{{build.metrics.maintainability.increase ? '#449D44' : 'red'}}" font-color="white" value="{{ build.metrics.maintainability.value }}" label="{{ build.metrics.maintainability.label }}"></arrow>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.metrics.state !== 'Pending' && build.metrics.state !== 'Running'" class="row">
+                                                        <div class="col-md-4">
+                                                            <arrow direction="right" background-color="#FFD800" font-color="black" value="{{ build.metrics.security.value }}" label="{{ build.metrics.security.label }}"></arrow>
+                                                        </div>
+                                                        <div class="col-md-8">
+                                                            <arrow direction="right" background-color="#FFD800" font-color="black" value="{{ build.metrics.workmanship.value }}" label="{{ build.metrics.workmanship.label }}"></arrow>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn collapseButton" ng-class="{'btn-default': (build.build.state === 'Pending'), 'btn-info': (build.build.state === 'Running'), 'btn-success': (build.build.state === 'Complete' || build.build.state === 'Accepted'), 'btn-danger': (build.build.state === 'Rejected')}" data-toggle="modal" data-target="#moreInformationModalId">
+                                                <div class="collapseContainerDiv">
+                                                    <div class="row">
+                                                        <div class="col-md-12 collapseContainerDivRow">
+                                                            <p class="text-success collapseContainerDivTitle">Build</p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.build.state === 'Pending' && build.build.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-muted">Yet to run...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.build.state === 'Pending' && !build.build.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-danger">Will not run !!</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.build.state === 'Running'" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-info">In Progress...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.build.state !== 'Pending' && build.build.state !== 'Running'" class="row">
+                                                        <div class="col-md-6">
+                                                            <utf-icon char-hex="&#x1f4bb" size="72" color="#7BAFD4"></utf-icon>
+                                                            <p class="buildText">Debug</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <utf-icon char-hex="&#x1f4bb" size="72" color="#7BAFD4"></utf-icon>
+                                                            <p class="buildText">Release</p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.build.state !== 'Pending' && build.build.state !== 'Running'" class="row">
+                                                        <div class="col-md-12 collapseContainerDivRow">
+                                                            <p  class="buildTimeText">{{ build.build.time }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn collapseButton" ng-class="{'btn-default': (build.unitTest.state === 'Pending'), 'btn-info': (build.unitTest.state === 'Running'), 'btn-success': (build.unitTest.state === 'Complete' || build.unitTest.state === 'Accepted'), 'btn-danger': (build.unitTest.state === 'Rejected')}" data-toggle="modal" data-target="#moreInformationModalId">
+                                                <div class="collapseContainerDiv">
+                                                    <div class="row">
+                                                        <div class="col-md-12 collapseContainerDivRow">
+                                                            <p class="text-success collapseContainerDivTitle">Unit Test</p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.unitTest.state === 'Pending' && build.unitTest.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-muted">Yet to run...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.unitTest.state === 'Pending' && !build.unitTest.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-danger">Will not run !!</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.unitTest.state === 'Running'" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-info">In Progress...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.unitTest.state !== 'Pending' && build.unitTest.state !== 'Running'" class="row">
+                                                        <div class="col-md-12 unitChartColumn">
+                                                            <pie-chart ng-if="build.collapse" name="Unit" data="build.unitTest.chartData"></pie-chart>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.unitTest.state !== 'Pending' && build.unitTest.state !== 'Running'" class="row">
+                                                        <div class="col-md-12 unitChartColumn">
+                                                            <progress-bar-with-text ng-if="build.collapse" value="{{ build.unitTest.codeCoverage ? build.unitTest.codeCoverage : 0 }}" label="code covered"></progress-bar-with-text>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" class="btn collapseButton" ng-class="{'btn-default': (build.functionalTest.state === 'Pending'), 'btn-info': (build.functionalTest.state === 'Running'), 'btn-success': (build.functionalTest.state === 'Complete' || build.functionalTest.state === 'Accepted'), 'btn-danger': (build.functionalTest.state === 'Rejected')}" data-toggle="modal" data-target="#moreInformationModalId">
+                                                <div class="collapseContainerDiv">
+                                                    <div class="row">
+                                                        <div class="col-md-12 collapseContainerDivRow">
+                                                            <p class="text-success collapseContainerDivTitle">Functional Test</p>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.functionalTest.state === 'Pending' && build.functionalTest.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-muted">Yet to run...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.functionalTest.state === 'Pending' && !build.functionalTest.willRun" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-danger">Will not run !!</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.functionalTest.state === 'Running'" class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="inProgressContainerDiv">
+                                                                <span class="inProgressTextLarge text-info">In Progress...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.functionalTest.state !== 'Pending' && build.functionalTest.state !== 'Running'" class="row">
+                                                        <div class="col-md-12 functionalChartColumn">
+                                                            <pie-chart ng-if="build.collapse" name="Unit" data="build.functionalTest.chartData"></pie-chart>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="build.functionalTest.state !== 'Pending' && build.functionalTest.state !== 'Running'" class="row">
+                                                        <div class="col-md-12 functionalChartColumn">
+                                                            <progress-bar-with-text ng-if="build.collapse" value="{{ build.functionalTest.codeCoverage ? build.functionalTest.codeCoverage : 0 }}" label="code covered"></progress-bar-with-text>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div ng-show="build.state === 'Accepted'" class="collapseContainerDiv">
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <p class="collapseContainerDivTitle">Result:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="acceptedResultContainerDiv">
+                                                            <span class="acceptedTextSmall">Change Accepted</span><br>
+                                                            <span class="acceptedTextLarge">Auto Merged</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <button type="button" class="btn btn-primary mergeBuildButton"><i class="glyphicon glyphicon-search"></i>Merged Build</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-show="build.state === 'Rejected' || build.state === 'Fail'" class="collapseContainerDiv">
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <p class="collapseContainerDivTitle">Result:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="rejectedResultContainerDiv">
+                                                            <span class="rejectedTextSmall">Change Rejected</span><br>
+                                                            <span ng-if="build.metrics.state === 'Rejected'" class="rejectedTextLarge">Metrics Reduction</span>
+                                                            <span ng-if="build.build.state === 'Rejected'" class="rejectedTextLarge">Build Failed</span>
+                                                            <span ng-if="build.unitTest.state === 'Rejected' || build.functionalTest.state === 'Rejected'" class="rejectedTextLarge">Test Failed</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <button type="button" class="btn btn-primary">Find Issues</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-show="build.state === 'Complete'" class="collapseContainerDiv">
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <p class="collapseContainerDivTitle">Result:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="completeResultContainerDiv">
+                                                            <span class="completeTextLarge">Complete</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 collapseContainerDivRow">
+                                                        <p class="completeTextSmall">Deploy To:</p>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="input-group"> 
+                                                            <select class="form-control">
+                                                                <option value="production">Production</option>
+                                                                <option value="development">Development</option>
+                                                            </select>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-primary" type="button">Go</button>
+                                                            </span>                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- More information modal -->
+    <div id="moreInformationModalId" class="modal fade" role="dialog">
+        <div class="modal-dialog" role="document">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h3 class="modal-title">More Information</h3>
+                </div>
+                <div class="modal-body">
+                    <p>TBD</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+.progressBarWithText .outerDiv {
+    position: relative;
+    text-align: center;
+    height: 40px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.progressBarWithText .outerDiv .barLabel .value {
+    font-weight: bold;
+}
+
+.progressBarWithText .outerDiv .barLabel .text {
+    font-size: 12px;
+}
+
+.progressBarWithText .greenDiv {
+    position: absolute;
+    height: 40px;
+    background-color: green;
+    opacity: 0.4;
+}
+
+.progressBarWithText .redDiv {
+    position: absolute;
+    height: 40px;
+    background-color: red;
+    opacity: 0.4;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    .progressBarWithText .outerDiv {
+        width: 75px;
+        height: 10px;
+    }
+
+    .progressBarWithText .greenDiv, .progressBarWithText .redDiv {
+        height: 8px;
+    }
+}

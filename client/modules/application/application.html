@@ -1,0 +1,17 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Crossover Dashboard</a>
+        </div>
+        <ul class="nav navbar-nav navbar-right clearfix" ng-show="ctrl.isLoggedIn()">
+            <li><a class="welcomeMessage">Welcome {{ctrl.auth.currentUser().username.toCapitalCase()}}</a></li>
+            <li><a class="logoutButton" ng-click="ctrl.logout()">Logout</a></li>
+        </ul> 
+    </div>
+</nav>
+<div class="container">
+    <ui-view></ui-view>
+</div>
+<footer class="container-fluid text-center">
+    Developed by Chirag Rupani
+</footer>

@@ -1,0 +1,25 @@
+.progressBar .outerDiv {
+    height: 35px;
+    width: 50px;
+    border: 2px solid #ccc;
+    position: relative;
+}
+
+.progressBar .innerDiv {
+    height: 31px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    .progressBar .outerDiv {
+        width: 25px;
+        height: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .progressBar .innerDiv {
+        height: 8px;
+    }
+}

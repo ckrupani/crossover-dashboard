@@ -1,0 +1,162 @@
+.dashboardView .table-header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.dashboardView .table-header .panel {
+    margin: 0px;
+    border: none;
+}
+
+.dashboardView .table-header .panel .panel-body {
+    padding: 0px 15px 5px 0px;
+}
+
+.dashboardView .table-header .panel .panel-body .changeListHeader {
+    padding-left: 45px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-heading {
+    padding: 5px;
+    /*background-color: white;*/
+}
+
+.dashboardView .table-body .panel-group .panel .panel-heading .row .text-column {
+    margin-top: 10px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-heading .row .buildName {
+    position: relative;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-heading .row .buildName a {
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+    color: inherit;
+    position: absolute;
+    top: 7px;
+    left: 55px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-heading .row .buildName span {
+    color: inherit;
+    font-size: 24px;
+    margin-right: 5px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseButton {
+    width: 100%;
+    height: 200px;
+    padding: 2px;
+    box-shadow: 2px 2px 5px #888888;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .unitChartColumn {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .functionalChartColumn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDivRow {
+    text-align: center;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDivTitle {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .buildText {
+    color:#7BAFD4;
+    font-weight: bold;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .buildTimeText {
+    font-size: 12px;
+    color: black;
+    font-weight: bold;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .acceptedResultContainerDiv {
+    text-align: center;
+    height: 120px;
+    padding-top: 19px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .acceptedTextSmall {
+    color: orange;
+    font-size: 16px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .acceptedTextLarge {
+    color: orange;
+    font-size: 30px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .mergeBuildButton i {
+    margin-right: 10px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .rejectedResultContainerDiv {
+    text-align: center;
+    height: 120px;
+    padding-top: 10px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .rejectedTextSmall {
+    color: red;
+    font-size: 16px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .rejectedTextLarge {
+    color: red;
+    font-size: 27px;
+    font-weight: bold;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .completeResultContainerDiv {
+    text-align: center;
+    height: 95px;
+    padding-top: 15px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .completeTextLarge {
+    color: green;
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .completeTextSmall {
+    font-size: 16px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .inProgressContainerDiv {
+    text-align: center;
+    height: 95px;
+    padding-top: 15px;
+}
+
+.dashboardView .table-body .panel-group .panel .panel-collapse .panel-body .collapseContainerDiv .inProgressTextLarge {
+    /*color: #555;*/
+    font-size: 26px;
+    font-weight: bold;
+}
