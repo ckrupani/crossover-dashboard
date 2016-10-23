@@ -1,6 +1,6 @@
 <div class="pieChart">
-    <div class="chartContainer"></div>
-    <div class="barLabel">
+    <div ng-show="data.length" class="chartContainer"></div>
+    <div ng-show="data.length" class="barLabel">
         <span class="value">{{ passPercentage + '%' }}</span><br>
         <span class="text">tests passed</span>
     </div>

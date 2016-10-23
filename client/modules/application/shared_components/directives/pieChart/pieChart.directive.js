@@ -82,35 +82,40 @@ export default [() => {
                 }]
             };
 
-            let total = scope.data.map(dt => dt.y).reduce((prev, curr) => {
-                return prev + curr;
-            }, 0), passed = scope.data.filter(data => data.name === 'Passed')[0].y;
+            let total, passed;
 
-            scope.passPercentage = Math.floor((passed/total)*100);
+            if (scope.data.length > 0) {
+                total = scope.data.map(dt => dt.y).reduce((prev, curr) => {
+                    return prev + curr;
+                }, 0);
+                passed = scope.data.filter(data => data.name === 'Passed')[0].y;
 
-            Highcharts.chart(chartOptions);
+                scope.passPercentage = Math.floor((passed/total)*100);
 
-            if (scope.passPercentage > 70) {
-                $(element).find('.pieChart .barLabel .value').css('color', '#449D44');
-            } else {
-                $(element).find('.pieChart .barLabel .value').css('color', 'orange');
+                Highcharts.chart(chartOptions);
+
+                if (scope.passPercentage > 70) {
+                    $(element).find('.pieChart .barLabel .value').css('color', '#449D44');
+                } else {
+                    $(element).find('.pieChart .barLabel .value').css('color', 'orange');
+                }
+
+                scope.$watch('data', (newValue, oldValue) => {
+                    if (newValue) {
+                        var newChartOptions = Object.assign({}, chartOptions);
+                        newChartOptions.series[0].data = newValue;
+                        Highcharts.chart(newChartOptions);
+                    }
+                }, true);
+
+                scope.$watch('name', (newValue, oldValue) => {
+                    if (newValue) {
+                        var newChartOptions = Object.assign({}, chartOptions);
+                        newChartOptions.series[0].name = newValue;
+                        Highcharts.chart(newChartOptions);
+                    }
+                }, true);
             }
-
-            scope.$watch('data', (newValue, oldValue) => {
-                if (newValue) {
-                    var newChartOptions = Object.assign({}, chartOptions);
-                    newChartOptions.series[0].data = newValue;
-                    Highcharts.chart(newChartOptions);
-                }
-            }, true);
-
-            scope.$watch('name', (newValue, oldValue) => {
-                if (newValue) {
-                    var newChartOptions = Object.assign({}, chartOptions);
-                    newChartOptions.series[0].name = newValue;
-                    Highcharts.chart(newChartOptions);
-                }
-            }, true);
        }
    };
 }];

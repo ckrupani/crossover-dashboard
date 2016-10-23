@@ -15,10 +15,26 @@ export default class Controller {
 
         Build.getList().then(data => {
             data.forEach(item => {
+
                 item.collapse = false;
-                this.setStatusColor(item);
-                this.checkWhetherWillRun(item);
-                this.setPieData(item);
+
+                ({
+                    metrics: item.metrics.color,
+                    build: item.build.color,
+                    unitTest: item.unitTest.color,
+                    functionalTest: item.functionalTest.color
+                } = this.setStatusColor(item));
+
+                ({
+                    build: item.build.willRun,
+                    unitTest: item.unitTest.willRun,
+                    functionalTest: item.functionalTest.willRun
+                } = this.checkWhetherWillRun(item));
+
+                ({
+                    unitTest: item.unitTest.chartData,
+                    functionalTest: item.functionalTest.chartData
+                } = this.setPieData(item));
             });
             this.buildList = data;
         });
@@ -36,10 +52,12 @@ export default class Controller {
     }
 
     setStatusColor(data) {
-        data.metrics.color = this.chooseColor(data.metrics.state);
-        data.build.color = this.chooseColor(data.build.state);
-        data.unitTest.color = this.chooseColor(data.unitTest.state);
-        data.functionalTest.color = this.chooseColor(data.functionalTest.state);
+        return {
+            metrics: this.chooseColor(data.metrics.state),
+            build: this.chooseColor(data.build.state),
+            unitTest: this.chooseColor(data.unitTest.state),
+            functionalTest: this.chooseColor(data.functionalTest.state)
+        };
     }
 
     chooseColor(status) {
@@ -55,40 +73,49 @@ export default class Controller {
     }
 
     checkWhetherWillRun(data) {
+        let runStatus = {};
+
         if (data.metrics.state !== 'Rejected' && data.build.state === 'Pending') {
-            data.build.willRun = true;
+            runStatus.build = true;
         } else if (data.metrics.state === 'Rejected' && data.build.state === 'Pending') {
-            data.build.willRun = false;
+            runStatus.build = false;
         }
 
         if (data.metrics.state !== 'Rejected' && data.unitTest.state === 'Pending') {
             if (data.build.state !== 'Rejected' && data.unitTest.state === 'Pending') {
-                data.unitTest.willRun = true;
+                runStatus.unitTest = true;
             } else if (data.build.state === 'Rejected' && data.unitTest.state === 'Pending') {
-                data.unitTest.willRun = false;
+                runStatus.unitTest = false;
             }
         } else if (data.metrics.state === 'Rejected' && data.unitTest.state === 'Pending') {
-            data.unitTest.willRun = false;
+            runStatus.unitTest = false;
         }
 
         if (data.metrics.state !== 'Rejected' && data.functionalTest.state === 'Pending') {
             if (data.build.state !== 'Rejected' && data.functionalTest.state === 'Pending') {
                 if (data.unitTest.state !== 'Rejected' && data.functionalTest.state === 'Pending') {
-                    data.functionalTest.willRun = true;
+                    runStatus.functionalTest = true;
                 } else if (data.unitTest.state === 'Rejected' && data.functionalTest.state === 'Pending') {
-                    data.functionalTest.willRun = false;
+                    runStatus.functionalTest = false;
                 }
             } else if (data.build.state === 'Rejected' && data.functionalTest.state === 'Pending') {
-                data.functionalTest.willRun = false;
+                runStatus.functionalTest = false;
             }
         } else if (data.metrics.state === 'Rejected' && data.functionalTest.state === 'Pending') {
-            data.functionalTest.willRun = false;
+            runStatus.functionalTest = false;
         }
+
+        return runStatus;
     }
 
     setPieData(data) {
+        let chartData = {
+            unitTest: [],
+            functionalTest: []
+        };
+
         if (data.unitTest.passed && data.unitTest.failed) {
-            data.unitTest.chartData = [{
+            chartData.unitTest = [{
                 name: 'Failed',
                 y: data.unitTest.failed,
                 color: 'red'
@@ -100,7 +127,7 @@ export default class Controller {
         }
 
         if (data.functionalTest.passed && data.functionalTest.failed) {
-            data.functionalTest.chartData = [{
+            chartData.functionalTest = [{
                 name: 'Failed',
                 y: data.functionalTest.failed,
                 color: 'red'
@@ -110,5 +137,7 @@ export default class Controller {
                 color: 'green'
             }];
         }
+
+        return chartData;
     }
 }
